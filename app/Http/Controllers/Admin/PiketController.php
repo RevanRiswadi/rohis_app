@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PiketAttendance;
 use App\Models\PiketMember;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PiketController extends Controller
@@ -92,7 +93,6 @@ class PiketController extends Controller
     // Menampilkan halaman kelola anggota piket
     public function members()
     {
-        // Dikembalikan ke variabel asli agar view tidak error
         $ikhwan = PiketMember::where('gender', 'Ikhwan')->orderBy('name')->get();
         $akhwat = PiketMember::where('gender', 'Akhwat')->orderBy('name')->get();
 
@@ -102,13 +102,37 @@ class PiketController extends Controller
     // Menyimpan perubahan rombak jadwal secara massal
     public function updateMembers(Request $request)
     {
-        // Update hari piket massal tanpa perlu ngetik manual
         if ($request->has('days')) {
             foreach ($request->days as $id => $day) {
                 PiketMember::where('id', $id)->update(['day' => $day]);
             }
         }
 
-        return redirect()->back()->with('success', 'Perubahan jadwal / rombak anggota piket berhasil disimpan!');
+        return redirect()->back()->with('success', 'Perubahan jadwal berhasil disimpan!');
+    }
+
+    // Tambah anggota piket baru
+    public function storeMember(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:100'],
+            'gender' => ['required', 'in:Ikhwan,Akhwat'],
+            'day' => ['required', 'in:Senin,Kamis'],
+        ]);
+
+        PiketMember::create($request->only('name', 'gender', 'day'));
+
+        return redirect()->route('admin.piket.members')
+            ->with('success', $request->name.' berhasil ditambahkan ke daftar anggota piket.');
+    }
+
+    // Hapus anggota piket beserta seluruh data absensinya
+    public function destroyMember(PiketMember $member): RedirectResponse
+    {
+        $name = $member->name;
+        $member->delete(); // cascade hapus piket_attendances & kas_iuran
+
+        return redirect()->route('admin.piket.members')
+            ->with('success', $name.' berhasil dihapus dari daftar anggota piket.');
     }
 }

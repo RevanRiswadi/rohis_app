@@ -19,7 +19,7 @@
                         {{ __('Galeri') }}
                     </x-nav-link>
                     <a href="{{ route('home') }}" class="inline-flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-bold text-emerald-700 transition hover:border-emerald-300 hover:bg-emerald-100 hover:text-emerald-800">
-                        <i data-lucide="house" class="h-4 w-4"></i>
+                        <x-icon name="home" class="h-4 w-4" />
                         {{ __('Kembali ke Halaman Web') }}
                     </a>
                 </div>
@@ -31,7 +31,7 @@
                         <button class="inline-flex items-center rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-100 focus:outline-none">
                             <div>{{ Auth::user()->name }}</div>
                             <div class="ms-1">
-                                <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                                <x-icon name="chevron-down" class="h-4 w-4" />
                             </div>
                         </button>
                     </x-slot>
@@ -54,25 +54,38 @@
 
             <div class="flex items-center -me-2 sm:hidden">
                 <button @click="open = ! open" class="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-slate-50 p-2 text-slate-600 transition hover:bg-slate-100 focus:outline-none">
-                    <i x-show="!open" data-lucide="menu" class="h-6 w-6"></i>
-                    <i x-show="open" data-lucide="x" class="h-6 w-6" style="display:none;"></i>
+                    <span x-show="!open"><x-icon name="menu" class="h-6 w-6" /></span>
+                    <span x-show="open" style="display:none;"><x-icon name="x" class="h-6 w-6" /></span>
                 </button>
             </div>
         </div>
     </div>
 
     <div :class="{'block': open, 'hidden': ! open}" class="hidden border-t border-slate-200 bg-white sm:hidden">
-        <div class="space-y-2 px-4 py-3">
-            <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('admin.members.index')" :active="request()->routeIs('admin.members.*')">
-                {{ __('Anggota') }}
-            </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('admin.galleries.index')" :active="request()->routeIs('admin.galleries.*')">
-                {{ __('Galeri') }}
-            </x-responsive-nav-link>
-            <a href="{{ route('home') }}" class="flex items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-700 transition hover:bg-emerald-100">
+        <div class="px-4 py-3 space-y-1">
+            @if(Auth::check() && request()->routeIs('admin.*') && isset($adminNavItems))
+                @foreach($adminNavItems as $item)
+                    <a href="{{ $item['route'] }}"
+                       @click="open = false"
+                       class="flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-semibold transition
+                           {{ $item['active'] ? 'bg-emerald-50 text-emerald-700' : 'text-slate-700 hover:bg-slate-100' }}">
+                        <i data-lucide="{{ $item['icon'] }}" class="h-4 w-4 shrink-0 {{ $item['active'] ? 'text-emerald-600' : 'text-slate-400' }}"></i>
+                        {{ $item['label'] }}
+                    </a>
+                @endforeach
+            @else
+                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.members.index')" :active="request()->routeIs('admin.members.*')">
+                    {{ __('Anggota') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.galleries.index')" :active="request()->routeIs('admin.galleries.*')">
+                    {{ __('Galeri') }}
+                </x-responsive-nav-link>
+            @endif
+
+            <a href="{{ route('home') }}" class="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-700 transition hover:bg-emerald-100 mt-2">
                 <i data-lucide="house" class="h-4 w-4"></i>
                 {{ __('Kembali ke Halaman Web') }}
             </a>

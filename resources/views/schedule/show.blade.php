@@ -1,75 +1,76 @@
-<!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $schedule->title }} - Rohis Darul Muttaqin</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    </style>
-</head>
-<body class="bg-slate-50 text-slate-800 antialiased">
-    <header class="sticky top-0 z-40 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl">
-        <div class="mx-auto flex h-20 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8">
-            <a href="{{ route('home') }}" class="flex items-center gap-3">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo Rohis Darul Muttaqin" class="h-11 w-11 rounded-full object-cover shadow-lg shadow-emerald-600/20">
-                <div>
-                    <div class="text-lg font-extrabold tracking-tight text-slate-900">Rohis Darul Muttaqin</div>
-                </div>
-            </a>
+<x-public-layout :title="$schedule->title . ' - Rohis Darul Muttaqin'" :active="'kegiatan'">
 
-            <a href="{{ route('home') }}" class="inline-flex items-center rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700">
-                Kembali ke Beranda
+    <section class="max-w-6xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+        <!-- Breadcrumb & Back button -->
+        <div class="mb-8 flex items-center justify-between">
+            <a href="{{ route('schedule.index') }}" class="inline-flex items-center gap-2 text-xs font-bold text-slate-600 hover:text-emerald-700 transition">
+                <x-icon name="arrow-left" class="w-4 h-4" />
+                <span>Kembali ke Semua Kegiatan</span>
             </a>
+            <span class="rohis-badge-amber text-[10px]">
+                {{ ucfirst($schedule->status) }}
+            </span>
         </div>
-    </header>
 
-    <main class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-        <div class="grid items-start gap-10 lg:grid-cols-2">
-            <div class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-3 shadow-[0_30px_80px_rgba(15,23,42,0.08)]">
+        <div class="grid items-start gap-10 lg:grid-cols-12">
+            <!-- Left: Image -->
+            <div class="lg:col-span-6 overflow-hidden rounded-3xl border border-slate-200 bg-white p-2.5 shadow-sm">
                 @if($schedule->image_path && Storage::disk('public')->exists($schedule->image_path))
-                    <img src="{{ asset('storage/' . $schedule->image_path) }}" alt="{{ $schedule->title }}" class="h-[520px] w-full rounded-[1.5rem] object-cover">
+                    <img src="{{ asset('storage/' . $schedule->image_path) }}" alt="{{ $schedule->title }}" class="h-[440px] w-full rounded-2xl object-cover">
                 @else
-                    <div class="flex h-[520px] w-full items-center justify-center rounded-[1.5rem] bg-gradient-to-br from-emerald-100 via-emerald-50 to-slate-200 text-xs font-extrabold uppercase tracking-[0.2em] text-slate-600">
-                        Dokumentasi Kegiatan
+                    <div class="flex h-[440px] w-full flex-col items-center justify-center rounded-2xl bg-emerald-50/60 text-emerald-700 gap-2">
+                        <x-icon name="image" class="w-12 h-12 opacity-40" />
+                        <span class="text-xs font-bold uppercase tracking-wider">Dokumentasi Acara</span>
                     </div>
                 @endif
             </div>
 
-            <div>
-                <div class="mb-5 flex flex-wrap items-center gap-3">
-                    <span class="rounded-full bg-emerald-100 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-emerald-700">
-                        {{ ucfirst($schedule->status) }}
+            <!-- Right: Details -->
+            <div class="lg:col-span-6 space-y-6">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 mb-3">
+                        <x-icon name="calendar" class="w-3.5 h-3.5" />
+                        {{ $schedule->event_date ? $schedule->event_date->format('d F Y, H:i') . ' WIB' : 'Waktu menyusul' }}
                     </span>
-                    <span class="text-sm font-medium text-slate-500">
-                        {{ $schedule->event_date ? $schedule->event_date->format('d M Y') : '-' }}
-                    </span>
+                    <h1 class="text-2xl sm:text-4xl font-black tracking-tight text-slate-900 leading-tight">
+                        {{ $schedule->title }}
+                    </h1>
                 </div>
 
-                <h1 class="mb-6 text-4xl font-extrabold leading-tight tracking-tight text-slate-900 md:text-5xl">
-                    {{ $schedule->title }}
-                </h1>
+                <!-- Info Grid -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 space-y-3 text-xs sm:text-sm shadow-xs">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 shrink-0">
+                            <x-icon name="map-pin" class="w-4 h-4 text-emerald-600" />
+                        </div>
+                        <div>
+                            <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Lokasi Pelaksanaan</span>
+                            <span class="font-bold text-slate-800">{{ $schedule->location }}</span>
+                        </div>
+                    </div>
 
-                <div class="space-y-4 text-base leading-relaxed text-slate-600">
-                    <p><strong class="font-bold text-slate-900">Lokasi:</strong> {{ $schedule->location }}</p>
                     @if($schedule->speaker)
-                        <p><strong class="font-bold text-slate-900">Pembicara:</strong> {{ $schedule->speaker }}</p>
-                    @endif
-                    @if($schedule->event_date)
-                        <p><strong class="font-bold text-slate-900">Tanggal:</strong> {{ $schedule->event_date->format('d M Y, H:i') }}</p>
+                        <div class="flex items-start gap-3 pt-3 border-t border-slate-100">
+                            <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-600 shrink-0">
+                                <x-icon name="users" class="w-4 h-4 text-emerald-600" />
+                            </div>
+                            <div>
+                                <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Pembicara / Pemateri</span>
+                                <span class="font-bold text-slate-800">{{ $schedule->speaker }}</span>
+                            </div>
+                        </div>
                     @endif
                 </div>
 
-                <div class="mt-8 rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
-                    <h2 class="mb-3 text-lg font-extrabold text-slate-900">Deskripsi Kegiatan</h2>
-                    <p class="whitespace-pre-line leading-relaxed text-slate-600">{{ $schedule->description }}</p>
+                <!-- Description -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-900 mb-3">Deskripsi & Catatan Kegiatan</h2>
+                    <p class="whitespace-pre-line leading-relaxed text-slate-600 text-sm">
+                        {{ $schedule->description }}
+                    </p>
                 </div>
             </div>
         </div>
-    </main>
-</body>
-</html>
+    </section>
+
+</x-public-layout>

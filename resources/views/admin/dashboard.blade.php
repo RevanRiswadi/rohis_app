@@ -71,7 +71,7 @@
                     <div class="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
                         <i data-lucide="book-image" class="h-6 w-6"></i>
                     </div>
-                    <h4 class="text-xl font-extrabold text-slate-900">Dokumentasi</h4>
+                    <h4 class="text-xl font-extrabold text-slate-900">Kegiatan & Agenda</h4>
                     <p class="mt-3 text-sm leading-relaxed text-slate-500">Tambah kegiatan, foto, dan dokumentasi acara Rohis.</p>
                     <div class="mt-5 inline-flex items-center text-sm font-bold text-emerald-600">
                         Kelola sekarang <span class="ml-2 transition group-hover:translate-x-1">→</span>

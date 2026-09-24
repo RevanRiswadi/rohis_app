@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\HomepageTextController;
+use App\Http\Controllers\Admin\KajianController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\OfficerController;
 use App\Http\Controllers\Admin\PiketController;
@@ -19,6 +20,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/kegiatan', [HomeController::class, 'allSchedules'])->name('schedule.index');
 Route::get('/kegiatan/{schedule}', [HomeController::class, 'showSchedule'])->name('schedule.show');
 Route::get('/pengurus', [HomeController::class, 'allOfficers'])->name('officer.index');
+Route::get('/pengumuman', [HomeController::class, 'allAnnouncements'])->name('announcement.index');
+Route::get('/pengumuman/{announcement:slug}', [HomeController::class, 'showAnnouncement'])->name('announcement.show');
 
 // Handle Form & Submit Pendaftaran
 Route::get('/daftar', [HomeController::class, 'createRegistration'])->name('register.create');
@@ -57,14 +60,19 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/piket', [PiketController::class, 'index'])->name('piket.index');
     Route::post('/piket', [PiketController::class, 'store'])->name('piket.store');
     Route::get('/piket/statistik', [PiketController::class, 'statistics'])->name('piket.statistics');
-
-    // Fitur Rombak Jadwal (BARU)
     Route::get('/piket/anggota', [PiketController::class, 'members'])->name('piket.members');
     Route::post('/piket/anggota', [PiketController::class, 'updateMembers'])->name('piket.updateMembers');
+    Route::post('/piket/anggota/tambah', [PiketController::class, 'storeMember'])->name('piket.members.store');
+    Route::delete('/piket/anggota/{member}', [PiketController::class, 'destroyMember'])->name('piket.members.destroy');
 
     // Kelola Teks Beranda
     Route::get('/teks-beranda', [HomepageTextController::class, 'index'])->name('texts.index');
     Route::post('/teks-beranda', [HomepageTextController::class, 'update'])->name('texts.update');
+
+    // Absensi Kajian
+    Route::get('/kajian', [KajianController::class, 'index'])->name('kajian.index');
+    Route::post('/kajian', [KajianController::class, 'store'])->name('kajian.store');
+    Route::delete('/kajian', [KajianController::class, 'destroy'])->name('kajian.destroy');
 
     // Kelola Galeri
     Route::get('/galeri', [GalleryController::class, 'index'])->name('galleries.index');
@@ -73,6 +81,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     // Rute untuk Halaman Kas & Infaq
     Route::get('/kas', [KasController::class, 'index'])->name('kas.index');
+    Route::get('/kas/export-pdf', [KasController::class, 'exportPdf'])->name('kas.export.pdf');
     Route::post('/kas/iuran', [KasController::class, 'storeIuran'])->name('kas.iuran.store');
     Route::post('/kas/iuran/libur', [KasController::class, 'storeLibur'])->name('kas.iuran.libur');
     Route::delete('/kas/iuran', [KasController::class, 'destroyIuran'])->name('kas.iuran.destroy');

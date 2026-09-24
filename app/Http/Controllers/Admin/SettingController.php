@@ -16,7 +16,26 @@ class SettingController extends Controller
         $socialWhatsapp = Setting::get('social_whatsapp', 'https://wa.me/6281234567890');
         $socialYoutube = Setting::get('social_youtube', 'https://youtube.com/@rohis.sekolah');
 
-        return view('admin.settings.index', compact('heroImage', 'socialInstagram', 'socialWhatsapp', 'socialYoutube'));
+        // Statistik homepage
+        $statAnggota = Setting::get('stat_anggota', '');
+        $statProgram = Setting::get('stat_program', '');
+        $statKajian = Setting::get('stat_kajian', 'Rutin');
+        $statUkhuwah = Setting::get('stat_ukhuwah', '100%');
+        $statAnggotaLabel = Setting::get('stat_anggota_label', 'Anggota Aktif');
+        $statProgramLabel = Setting::get('stat_program_label', 'Program Kegiatan');
+        $statKajianLabel = Setting::get('stat_kajian_label', 'Kajian Mingguan');
+        $statUkhuwahLabel = Setting::get('stat_ukhuwah_label', 'Ukhuwah');
+
+        // WhatsApp Fonnte
+        $fonnteToken = Setting::get('fonnte_token', '');
+        $waAdminNumber = Setting::get('wa_admin_number', '');
+
+        return view('admin.settings.index', compact(
+            'heroImage', 'socialInstagram', 'socialWhatsapp', 'socialYoutube',
+            'statAnggota', 'statProgram', 'statKajian', 'statUkhuwah',
+            'statAnggotaLabel', 'statProgramLabel', 'statKajianLabel', 'statUkhuwahLabel',
+            'fonnteToken', 'waAdminNumber',
+        ));
     }
 
     public function update(Request $request)
@@ -26,6 +45,16 @@ class SettingController extends Controller
             'social_instagram' => ['nullable', 'url'],
             'social_whatsapp' => ['nullable', 'string', 'max:255'],
             'social_youtube' => ['nullable', 'url'],
+            'stat_anggota' => ['nullable', 'string', 'max:20'],
+            'stat_program' => ['nullable', 'string', 'max:20'],
+            'stat_kajian' => ['nullable', 'string', 'max:30'],
+            'stat_ukhuwah' => ['nullable', 'string', 'max:20'],
+            'stat_anggota_label' => ['nullable', 'string', 'max:40'],
+            'stat_program_label' => ['nullable', 'string', 'max:40'],
+            'stat_kajian_label' => ['nullable', 'string', 'max:40'],
+            'stat_ukhuwah_label' => ['nullable', 'string', 'max:40'],
+            'fonnte_token' => ['nullable', 'string', 'max:255'],
+            'wa_admin_number' => ['nullable', 'string', 'max:30'],
         ], [
             'hero_image.image' => 'File harus berupa gambar (JPG, PNG, WEBP).',
             'hero_image.max' => 'Ukuran gambar maksimal 3MB.',
@@ -65,7 +94,21 @@ class SettingController extends Controller
             Setting::set('social_youtube', $request->input('social_youtube'));
         }
 
-        return redirect()->route('admin.settings.index')->with('success', 'Foto Hero dan Pengaturan Kontak WhatsApp/Sosmed berhasil diperbarui.');
+        // Simpan statistik homepage
+        Setting::set('stat_anggota', $request->input('stat_anggota', ''));
+        Setting::set('stat_program', $request->input('stat_program', ''));
+        Setting::set('stat_kajian', $request->input('stat_kajian', 'Rutin'));
+        Setting::set('stat_ukhuwah', $request->input('stat_ukhuwah', '100%'));
+        Setting::set('stat_anggota_label', $request->input('stat_anggota_label', 'Anggota Aktif'));
+        Setting::set('stat_program_label', $request->input('stat_program_label', 'Program Kegiatan'));
+        Setting::set('stat_kajian_label', $request->input('stat_kajian_label', 'Kajian Mingguan'));
+        Setting::set('stat_ukhuwah_label', $request->input('stat_ukhuwah_label', 'Ukhuwah'));
+
+        // Simpan konfigurasi Fonnte WhatsApp
+        Setting::set('fonnte_token', $request->input('fonnte_token', ''));
+        Setting::set('wa_admin_number', $request->input('wa_admin_number', ''));
+
+        return redirect()->route('admin.settings.index')->with('success', 'Pengaturan berhasil disimpan.');
     }
 
     private function formatWhatsappUrl(?string $input): string

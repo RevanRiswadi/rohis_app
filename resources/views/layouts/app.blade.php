@@ -7,6 +7,10 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+        <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -20,18 +24,18 @@
     <body class="font-sans antialiased">
         @if(Auth::check() && request()->routeIs('admin.*'))
             @php
-                // Di sinilah menu Pengumuman ditambahkan
                 $adminNavItems = [
-                    ['label' => 'Dashboard', 'route' => route('admin.dashboard'), 'active' => request()->routeIs('admin.dashboard')],
-                    ['label' => 'Pendaftaran', 'route' => route('admin.registrations.index'), 'active' => request()->routeIs('admin.registrations.*')],
-                    ['label' => 'Pengurus', 'route' => route('admin.officers.index'), 'active' => request()->routeIs('admin.officers.*')],
-                    ['label' => 'Dokumentasi', 'route' => route('admin.schedules.index'), 'active' => request()->routeIs('admin.schedules.*')],
-                    ['label' => 'Pengumuman', 'route' => route('admin.announcements.index'), 'active' => request()->routeIs('admin.announcements.*')],
-                    ['label' => 'Foto Hero', 'route' => route('admin.settings.index'), 'active' => request()->routeIs('admin.settings.*')],
-                    ['label' => 'Absensi Piket', 'route' => route('admin.piket.index'), 'active' => request()->routeIs('admin.piket.*')],
-                    ['label' => 'Kas & Infaq', 'route' => route('admin.kas.index'), 'active' => request()->routeIs('admin.kas.*')],
-                    ['label' => 'Teks Beranda', 'route' => route('admin.texts.index'), 'active' => request()->routeIs('admin.texts.*')],
-                    ['label' => 'Galeri Kegiatan', 'route' => route('admin.galleries.index'), 'active' => request()->routeIs('admin.galleries.*')],
+                    ['label' => 'Dashboard',       'icon' => 'layout-dashboard',  'route' => route('admin.dashboard'),              'active' => request()->routeIs('admin.dashboard')],
+                    ['label' => 'Pendaftaran',      'icon' => 'clipboard-list',    'route' => route('admin.registrations.index'),     'active' => request()->routeIs('admin.registrations.*')],
+                    ['label' => 'Pengurus',         'icon' => 'users-round',       'route' => route('admin.officers.index'),          'active' => request()->routeIs('admin.officers.*')],
+                    ['label' => 'Kegiatan & Agenda',  'icon' => 'book-image',        'route' => route('admin.schedules.index'),         'active' => request()->routeIs('admin.schedules.*')],
+                    ['label' => 'Pengumuman',       'icon' => 'megaphone',         'route' => route('admin.announcements.index'),     'active' => request()->routeIs('admin.announcements.*')],
+                    ['label' => 'Foto Hero',        'icon' => 'image',             'route' => route('admin.settings.index'),          'active' => request()->routeIs('admin.settings.*')],
+                    ['label' => 'Absensi Piket',    'icon' => 'check-square',      'route' => route('admin.piket.index'),             'active' => request()->routeIs('admin.piket.*')],
+                    ['label' => 'Absensi Kajian',   'icon' => 'calendar-check',    'route' => route('admin.kajian.index'),            'active' => request()->routeIs('admin.kajian.*')],
+                    ['label' => 'Kas & Infaq',      'icon' => 'wallet',            'route' => route('admin.kas.index'),               'active' => request()->routeIs('admin.kas.*')],
+                    ['label' => 'Teks Beranda',     'icon' => 'pencil-line',       'route' => route('admin.texts.index'),             'active' => request()->routeIs('admin.texts.*')],
+                    ['label' => 'Galeri Kegiatan',  'icon' => 'images',            'route' => route('admin.galleries.index'),         'active' => request()->routeIs('admin.galleries.*')],
                 ];
             @endphp
 
@@ -46,12 +50,14 @@
                             </div>
                         </div>
 
-                        <nav class="space-y-2">
+                        <nav class="space-y-1">
                             @foreach($adminNavItems as $item)
-                                <a href="{{ $item['route'] }}" class="rohis-admin-link flex items-center justify-between {{ $item['active'] ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
-                                    <span>{{ $item['label'] }}</span>
+                                <a href="{{ $item['route'] }}"
+                                   class="rohis-admin-link flex items-center gap-3 {{ $item['active'] ? 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }}">
+                                    <i data-lucide="{{ $item['icon'] }}" class="h-4 w-4 shrink-0 {{ $item['active'] ? 'text-emerald-600' : 'text-slate-400' }}"></i>
+                                    <span class="flex-1">{{ $item['label'] }}</span>
                                     @if($item['active'])
-                                        <span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                                        <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
                                     @endif
                                 </a>
                             @endforeach
@@ -65,7 +71,8 @@
 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit" class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-100">
+                                <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-100">
+                                    <i data-lucide="log-out" class="w-4 h-4 text-slate-400"></i>
                                     Log Out
                                 </button>
                             </form>

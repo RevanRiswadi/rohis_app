@@ -1,29 +1,29 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Ceklis Piket Masjid</h2>
-            <div class="space-x-2">
+            <div class="flex flex-wrap gap-2">
                 <a href="{{ route('admin.piket.members') }}" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg text-sm shadow-sm transition">
                     <i data-lucide="settings-2" class="w-4 h-4"></i>
-                    Rombak Jadwal Anggota
+                    Rombak Jadwal
                 </a>
                 <a href="{{ route('admin.piket.statistics') }}" class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg text-sm shadow-sm transition">
                     <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
-                    Lihat Statistik
+                    Statistik
                 </a>
             </div>
         </div>
     </x-slot>
 
-    <div class="max-w-5xl py-12 mx-auto sm:px-6 lg:px-8">
+    <div class="max-w-5xl py-12 mx-auto px-4 sm:px-6 lg:px-8">
         @if (session('success'))
             <div class="p-4 mb-4 text-sm border rounded-lg text-emerald-800 bg-emerald-50 border-emerald-200">
                 {{ session('success') }}</div>
         @endif
 
        <!-- Form Pilih Tanggal & Tombol WA -->
-        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-            <form action="{{ route('admin.piket.index') }}" method="GET" class="flex gap-4 items-end">
+        <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-6 flex flex-col gap-4">
+            <form action="{{ route('admin.piket.index') }}" method="GET" class="flex flex-wrap gap-3 items-end">
                 <div>
                     <label class="block text-sm font-bold text-gray-700 mb-1">Pilih Tanggal Piket:</label>
                     <input type="date" name="date" value="{{ $date }}" class="rounded-lg border-gray-300 focus:border-emerald-500 focus:ring-emerald-500 shadow-sm">
@@ -53,9 +53,9 @@
                 @csrf
                 <input type="hidden" name="date" value="{{ $date }}">
 
-                <div class="flex justify-between items-center mb-4 border-b pb-3">
+                <div class="flex flex-wrap justify-between items-center mb-4 border-b pb-3 gap-3">
                     <h3 class="text-lg font-bold text-emerald-700">Daftar Piket Hari {{ $dayName }}</h3>
-                    <div class="space-x-2">
+                    <div class="flex flex-wrap gap-2">
                         <button type="button" onclick="toggleSemuaCeklis(true)"
                             class="inline-flex items-center gap-1.5 text-xs bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold py-1.5 px-3 rounded-md transition border border-emerald-300">
                             <i data-lucide="check-square" class="w-3.5 h-3.5"></i>

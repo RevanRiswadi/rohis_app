@@ -8,72 +8,89 @@
     --rohis-green-500: #10b981;
     --rohis-green-600: #059669;
     --rohis-green-700: #047857;
+    --rohis-green-800: #065f46;
     --rohis-green-900: #064e3b;
-    --rohis-brand-50: #f0fdf4;
-    --rohis-brand-100: #dcfce7;
-    --rohis-brand-500: #22c55e;
-    --rohis-brand-600: #16a34a;
-    --rohis-brand-700: #15803d;
-    --rohis-brand-900: #14532d;
-    --rohis-slate-800: #1f2937;
-    --rohis-slate-600: #475569;
-    --rohis-slate-200: #e2e8f0;
+    --rohis-green-950: #022c22;
+    --rohis-gold-50: #fffbeb;
+    --rohis-gold-100: #fef3c7;
+    --rohis-gold-500: #f59e0b;
+    --rohis-gold-600: #d97706;
+    --rohis-gold-700: #b45309;
+    --rohis-cream: #fbfbf9;
 }
 
 html {
     scroll-behavior: smooth;
+    overflow-x: clip;
 }
 
 body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #1e293b;
+    background-color: #fcfcfb;
+    overflow-x: clip;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Subtle Geometric Islamic Star Pattern (Subtle, dignified, 3-5% opacity) */
+.bg-islamic-pattern {
+    background-color: #fcfcfb;
+    background-image: radial-gradient(rgba(4, 120, 87, 0.05) 1px, transparent 0),
+        radial-gradient(rgba(180, 83, 9, 0.03) 1px, transparent 0);
+    background-size: 28px 28px;
+    background-position: 0 0, 14px 14px;
+}
+
+.bg-islamic-stars {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23047857' fill-opacity='0.035'%3E%3Cpath d='M30 0l4.24 10.24L44.48 6l-4.24 10.24L50.48 20l-10.24 4.24L44.48 34.48 34.24 30.24 30 40.48l-4.24-10.24L15.52 34.48l4.24-10.24L9.52 20l10.24-4.24L15.52 6l10.24 4.24z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
 }
 
 @layer components {
     .rohis-admin-shell {
-        @apply bg-gradient-to-br from-emerald-50/60 via-slate-50 to-emerald-50/30;
+        @apply bg-slate-50/80 min-h-screen text-slate-800;
     }
 
     .rohis-admin-sidebar {
-        @apply border border-emerald-100 bg-white/90 shadow-[0_20px_45px_rgba(15,118,110,0.08)] backdrop-blur-xl;
+        @apply border border-slate-200/80 bg-white shadow-sm;
     }
 
     .rohis-admin-link {
-        @apply rounded-2xl px-3 py-2.5 text-sm font-semibold transition duration-200;
-    }
-
-    .rohis-admin-card {
-        @apply rounded-[1.75rem] border border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)];
-    }
-
-    .rohis-admin-header {
-        @apply rounded-[1.75rem] border border-emerald-100 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.04)];
-    }
-
-    .rohis-shell {
-        @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+        @apply rounded-xl px-3.5 py-2.5 text-sm font-semibold transition duration-150;
     }
 
     .rohis-card {
-        @apply bg-white/90 rounded-[2rem] border border-emerald-100/80 shadow-[0_15px_35px_rgba(15,23,42,0.05)] backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:shadow-[0_25px_50px_rgba(16,185,129,0.12)] hover:border-emerald-200;
+        @apply bg-white rounded-2xl border border-slate-200/80 shadow-sm transition duration-200 hover:shadow-md hover:border-emerald-200/80;
     }
 
     .rohis-badge {
-        @apply inline-flex items-center gap-2 rounded-full border border-emerald-200/80 bg-emerald-50/90 px-4 py-2 text-xs font-extrabold uppercase tracking-[0.2em] text-emerald-800 shadow-sm;
+        @apply inline-flex items-center gap-2 rounded-full border border-emerald-200/80 bg-emerald-50/90 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-emerald-800 shadow-sm;
     }
 
-    .rohis-stat {
-        @apply rounded-2xl border border-emerald-100 bg-white/80 p-4 backdrop-blur-sm shadow-sm;
+    .rohis-badge-amber {
+        @apply inline-flex items-center gap-1.5 rounded-full border border-amber-200/80 bg-amber-50/90 px-3 py-1 text-xs font-bold uppercase tracking-wider text-amber-800 shadow-sm;
     }
 
-    .news-card {
-        @apply overflow-hidden rounded-[2rem] border border-emerald-100 bg-white shadow-[0_10px_25px_rgba(15,23,42,0.045)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_25px_45px_rgba(16,185,129,0.14)];
+    .cta-primary {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-700 px-6 py-3 text-sm font-bold text-white shadow-sm shadow-emerald-700/20 transition duration-200 hover:bg-emerald-800 hover:shadow-md active:scale-[0.99];
+    }
+
+    .cta-secondary {
+        @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-700 shadow-sm transition duration-200 hover:border-emerald-300 hover:bg-emerald-50/60 hover:text-emerald-800 active:scale-[0.99];
+    }
+
+    .form-input {
+        @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-800 shadow-sm transition duration-150 placeholder:text-slate-400 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/20;
+    }
+
+    .form-textarea {
+        @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-800 shadow-sm transition duration-150 placeholder:text-slate-400 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/20;
     }
 }
 
 @keyframes fadeUp {
     from {
         opacity: 0;
-        transform: translateY(18px);
+        transform: translateY(14px);
     }
     to {
         opacity: 1;
@@ -81,78 +98,14 @@ body {
     }
 }
 
-@keyframes floatSoft {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-8px);
-    }
-}
-
 .animate-fade-up {
-    animation: fadeUp 0.8s ease-out both;
+    animation: fadeUp 0.6s ease-out both;
 }
 
-.animate-float {
-    animation: floatSoft 5s ease-in-out infinite;
+/* Details summary clean marker reset */
+details > summary {
+    list-style: none;
 }
-
-.hero-glow {
-    background: radial-gradient(circle at top left, rgba(16, 185, 129, 0.18), transparent 40%),
-        radial-gradient(circle at bottom right, rgba(20, 184, 166, 0.14), transparent 35%);
+details > summary::-webkit-details-marker {
+    display: none;
 }
-
-.program-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 52px;
-    height: 52px;
-    border-radius: 16px;
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(20, 184, 166, 0.25));
-    color: var(--rohis-green-700);
-    font-size: 1.5rem;
-}
-
-.vector-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 30px;
-    background: linear-gradient(135deg, #f0fdf4, #ffffff 60%, #ecfdf5);
-    border: 1px solid rgba(16, 185, 129, 0.15);
-    box-shadow: 0 20px 45px rgba(5, 150, 105, 0.12);
-}
-
-.mosque-accent {
-    position: absolute;
-    width: 160px;
-    height: 160px;
-    right: -20px;
-    bottom: -30px;
-    background: rgba(16, 185, 129, 0.08);
-    border-radius: 50%;
-}
-
-.rohis-illustration {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
-.form-input {
-    @apply w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-5 py-3.5 text-sm font-medium text-slate-800 shadow-sm transition duration-200 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-100;
-}
-
-.form-textarea {
-    @apply w-full rounded-2xl border border-slate-200 bg-slate-50/80 px-5 py-3.5 text-sm font-medium text-slate-800 shadow-sm transition duration-200 placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-100;
-}
-
-.cta-main {
-    @apply inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 transition duration-300 hover:-translate-y-0.5 hover:from-emerald-700 hover:to-teal-700;
-}
-
-.cta-secondary {
-    @apply inline-flex items-center justify-center rounded-2xl border border-emerald-200/80 bg-white/90 px-6 py-3.5 text-sm font-semibold text-slate-700 transition duration-300 hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 shadow-sm;
-}
-

@@ -6,7 +6,6 @@ use App\Models\KasIuran;
 use App\Models\KasPengeluaran;
 use App\Models\PiketMember;
 use Carbon\Carbon;
-use Carbon\CarbonPeriod;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -39,6 +38,54 @@ class KasController extends Controller
         }
 
         return $sabtuList->sortDesc()->values();
+    }
+
+    /**
+     * Export rekap kas sebagai halaman printable (PDF via browser print).
+     */
+    public function exportPdf(Request $request): View
+    {
+        $bulan = (int) $request->get('bulan', Carbon::now()->month);
+        $tahun = (int) $request->get('tahun', Carbon::now()->year);
+
+        $members = PiketMember::orderBy('gender')->orderBy('name')->get();
+
+        $pertemuanBulan = KasIuran::whereYear('tanggal_pertemuan', $tahun)
+            ->whereMonth('tanggal_pertemuan', $bulan)
+            ->where('status_pertemuan', 'rekap')
+            ->select('tanggal_pertemuan')
+            ->distinct()
+            ->orderBy('tanggal_pertemuan')
+            ->pluck('tanggal_pertemuan');
+
+        $iuranBulan = KasIuran::whereYear('tanggal_pertemuan', $tahun)
+            ->whereMonth('tanggal_pertemuan', $bulan)
+            ->with('member')
+            ->get()
+            ->groupBy('piket_member_id');
+
+        $pengeluaranBulan = KasPengeluaran::whereYear('tanggal', $tahun)
+            ->whereMonth('tanggal', $bulan)
+            ->orderBy('tanggal')
+            ->get();
+
+        $totalIuranBulan = KasIuran::whereYear('tanggal_pertemuan', $tahun)
+            ->whereMonth('tanggal_pertemuan', $bulan)
+            ->where('sudah_bayar', true)
+            ->where('status_pertemuan', 'rekap')
+            ->sum('nominal');
+
+        $totalPengeluaranBulan = $pengeluaranBulan->sum('nominal');
+        $saldoBulan = $totalIuranBulan - $totalPengeluaranBulan;
+
+        $namaBulan = Carbon::create()->month($bulan)->locale('id')->translatedFormat('F');
+
+        return view('admin.kas.export-pdf', compact(
+            'bulan', 'tahun', 'namaBulan',
+            'members', 'pertemuanBulan', 'iuranBulan',
+            'pengeluaranBulan',
+            'totalIuranBulan', 'totalPengeluaranBulan', 'saldoBulan',
+        ));
     }
 
     /**

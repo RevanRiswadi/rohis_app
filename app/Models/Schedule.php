@@ -22,4 +22,9 @@ class Schedule extends Model
     protected $casts = [
         'event_date' => 'datetime',
     ];
+
+    public function kajianAttendances()
+    {
+        return $this->hasMany(KajianAttendance::class);
+    }
 }

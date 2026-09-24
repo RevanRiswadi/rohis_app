@@ -44,7 +44,9 @@ class ScheduleController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('admin.schedules.index')->with('success', 'Dokumentasi kegiatan berhasil ditambahkan.');
+        return redirect(
+            $request->input('_redirect', route('admin.schedules.index'))
+        )->with('success', 'Kajian berhasil ditambahkan.');
     }
 
     public function edit(Schedule $schedule)

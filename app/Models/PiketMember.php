@@ -17,4 +17,9 @@ class PiketMember extends Model
     {
         return $this->hasMany(KasIuran::class);
     }
+
+    public function kajianAttendances()
+    {
+        return $this->hasMany(KajianAttendance::class);
+    }
 }

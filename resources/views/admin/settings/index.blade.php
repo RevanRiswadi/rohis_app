@@ -17,7 +17,7 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8">
             @if(session('success'))
                 <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-medium text-emerald-800">
                     {{ session('success') }}
@@ -108,6 +108,172 @@
                     </div>
                 </div>
             </div>
+
+            {{-- STATISTIK HOMEPAGE --}}
+            <div class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_45px_rgba(15,23,42,0.05)] md:p-8">
+                <div class="mb-6 flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                        <i data-lucide="bar-chart-2" class="h-5 w-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-extrabold text-slate-900">Statistik Homepage</h3>
+                        <p class="text-xs text-slate-500">4 angka yang tampil di bagian Tentang Kami. Kosongkan nilai untuk pakai data otomatis dari database.</p>
+                    </div>
+                </div>
+
+                <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-5">
+                    @csrf
+                    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                        {{-- Stat 1: Anggota --}}
+                        <div class="rounded-2xl border border-emerald-100 bg-emerald-50/50 p-4 space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span class="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+                                <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Kartu 1</p>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Nilai <span class="text-slate-400 font-normal">(kosong = auto)</span></label>
+                                <input type="text" name="stat_anggota" value="{{ old('stat_anggota', $statAnggota) }}"
+                                    placeholder="Contoh: 120+"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-800 focus:border-emerald-500 focus:ring-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Label</label>
+                                <input type="text" name="stat_anggota_label" value="{{ old('stat_anggota_label', $statAnggotaLabel) }}"
+                                    placeholder="Anggota Aktif"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500">
+                            </div>
+                        </div>
+
+                        {{-- Stat 2: Program --}}
+                        <div class="rounded-2xl border border-teal-100 bg-teal-50/50 p-4 space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span class="h-2.5 w-2.5 rounded-full bg-teal-500"></span>
+                                <p class="text-xs font-bold uppercase tracking-wider text-teal-700">Kartu 2</p>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Nilai <span class="text-slate-400 font-normal">(kosong = auto)</span></label>
+                                <input type="text" name="stat_program" value="{{ old('stat_program', $statProgram) }}"
+                                    placeholder="Contoh: 12+"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-800 focus:border-teal-500 focus:ring-teal-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Label</label>
+                                <input type="text" name="stat_program_label" value="{{ old('stat_program_label', $statProgramLabel) }}"
+                                    placeholder="Program Kegiatan"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-teal-500 focus:ring-teal-500">
+                            </div>
+                        </div>
+
+                        {{-- Stat 3: Kajian --}}
+                        <div class="rounded-2xl border border-amber-100 bg-amber-50/50 p-4 space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span>
+                                <p class="text-xs font-bold uppercase tracking-wider text-amber-700">Kartu 3</p>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Nilai</label>
+                                <input type="text" name="stat_kajian" value="{{ old('stat_kajian', $statKajian) }}"
+                                    placeholder="Rutin"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-800 focus:border-amber-500 focus:ring-amber-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Label</label>
+                                <input type="text" name="stat_kajian_label" value="{{ old('stat_kajian_label', $statKajianLabel) }}"
+                                    placeholder="Kajian Mingguan"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-amber-500 focus:ring-amber-500">
+                            </div>
+                        </div>
+
+                        {{-- Stat 4: Ukhuwah --}}
+                        <div class="rounded-2xl border border-emerald-100 bg-emerald-50/50 p-4 space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span class="h-2.5 w-2.5 rounded-full bg-emerald-600"></span>
+                                <p class="text-xs font-bold uppercase tracking-wider text-emerald-700">Kartu 4</p>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Nilai</label>
+                                <input type="text" name="stat_ukhuwah" value="{{ old('stat_ukhuwah', $statUkhuwah) }}"
+                                    placeholder="100%"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-bold text-slate-800 focus:border-emerald-500 focus:ring-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Label</label>
+                                <input type="text" name="stat_ukhuwah_label" value="{{ old('stat_ukhuwah_label', $statUkhuwahLabel) }}"
+                                    placeholder="Ukhuwah"
+                                    class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700 focus:border-emerald-500 focus:ring-emerald-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700">
+                            <i data-lucide="save" class="h-4 w-4"></i>
+                            Simpan Statistik
+                        </button>
+                    </div>
+                </form>
+            </div>
+            {{-- WHATSAPP NOTIFIKASI (FONNTE) --}}
+            <div class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_20px_45px_rgba(15,23,42,0.05)] md:p-8">
+                <div class="mb-6 flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                        <i data-lucide="message-circle" class="h-5 w-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-extrabold text-slate-900">Notifikasi WhatsApp Otomatis</h3>
+                        <p class="text-xs text-slate-500">Admin mendapat notif WA setiap ada pendaftar baru. Pakai <a href="https://fonnte.com" target="_blank" class="text-emerald-600 hover:underline font-semibold">Fonnte</a> — daftar gratis, ~Rp 10/pesan.</p>
+                    </div>
+                </div>
+
+                <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-5">
+                    @csrf
+                    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5">
+                                Fonnte API Token
+                            </label>
+                            <input type="text" name="fonnte_token"
+                                value="{{ old('fonnte_token', $fonnteToken) }}"
+                                placeholder="Paste token dari dashboard Fonnte"
+                                class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-mono focus:border-emerald-500 focus:ring-emerald-500">
+                            <p class="mt-1.5 text-xs text-slate-400">Dapatkan di <strong>fonnte.com → Dashboard → Token</strong>.</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-1.5">
+                                Nomor WA Admin (penerima notif)
+                            </label>
+                            <input type="text" name="wa_admin_number"
+                                value="{{ old('wa_admin_number', $waAdminNumber) }}"
+                                placeholder="Contoh: 081234567890"
+                                class="w-full rounded-xl border border-slate-300 px-4 py-2.5 text-sm focus:border-emerald-500 focus:ring-emerald-500">
+                            <p class="mt-1.5 text-xs text-slate-400">Nomor HP admin yang akan menerima notif saat ada pendaftar baru.</p>
+                        </div>
+                    </div>
+
+                    {{-- Status indikator --}}
+                    <div class="flex items-center gap-3 rounded-xl border px-4 py-3 text-sm
+                        {{ filled($fonnteToken) && filled($waAdminNumber)
+                            ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+                            : 'border-amber-200 bg-amber-50 text-amber-700' }}">
+                        <i data-lucide="{{ filled($fonnteToken) && filled($waAdminNumber) ? 'check-circle-2' : 'alert-circle' }}"
+                           class="h-4 w-4 shrink-0"></i>
+                        @if(filled($fonnteToken) && filled($waAdminNumber))
+                            <span><strong>Aktif</strong> — Notifikasi WA akan terkirim otomatis saat ada pendaftar baru.</span>
+                        @else
+                            <span><strong>Belum aktif</strong> — Isi token dan nomor admin untuk mengaktifkan notifikasi.</span>
+                        @endif
+                    </div>
+
+                    <div class="pt-1">
+                        <button type="submit"
+                            class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700">
+                            <i data-lucide="save" class="h-4 w-4"></i>
+                            Simpan Konfigurasi WA
+                        </button>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 </x-app-layout>
